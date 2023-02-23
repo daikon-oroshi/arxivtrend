@@ -1,6 +1,6 @@
-import arxiv
 import argparse
 from datetime import date
+from arxivtrend.arxiv_api import ArxivApi, Query
 
 
 def parse_date_str(date_str: str) -> date:
@@ -25,22 +25,28 @@ parser.add_argument(
     "-b", "--submitted_begin",
     type=parse_date_str, required=False
 )
-
-
-def validate_arg(args):
-    pass
+parser.add_argument(
+    "-c", "--category",
+    type=str, required=False
+)
 
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    q = Query(
+        search_q=args.q,
+        submitted_begin=args.submitted_begin,
+        submitted_end=args.submitted_end,
+        category=args.category
+    )
+    api = ArxivApi()
 
-    search = arxiv.Search(
-        query=f"ti:\"{args.q}\" AND cat:\"math.MP\" AND submittedDate:[20230215000000 TO 20230219000000]",
-        sort_by=arxiv.SortCriterion.SubmittedDate,
-        max_results=15
+    results = api.search(
+        q,
+        max_results=10
     )
 
-    for s in search.results():
+    for s in results:
         print(s.title)
         print(s.categories)
         print(s.summary)
