@@ -1,4 +1,4 @@
-from typing import Generator, Optional, Dict
+from typing import Generator, Optional, Dict, List
 from datetime import date
 from pydantic import BaseModel, validator
 import arxiv
@@ -49,6 +49,14 @@ class ArxivApi():
         )
         for r in search.results():
             yield r
+
+    def store(
+        self,
+        db,
+        q: Query,
+        results: List[arxiv.Result]
+    ) -> None:
+        pass
 
     def make_query_str(
         self,
