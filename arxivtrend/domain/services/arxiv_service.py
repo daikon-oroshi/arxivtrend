@@ -2,7 +2,7 @@ from typing import Generator, Optional, Dict, List
 from datetime import date
 from pydantic import BaseModel, validator
 import arxiv
-from arxivtrend.arxiv_api.taxonomy import get_partial_match_taxonomies
+from arxivtrend.infra.arxiv_api.taxonomy import get_partial_match_taxonomies
 from arxivtrend.log import logger
 
 

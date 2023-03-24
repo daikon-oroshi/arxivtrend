@@ -1,0 +1,1 @@
+from arxivtrend.domain.services.arxiv_api import ArxivApi, Query  # noqa
