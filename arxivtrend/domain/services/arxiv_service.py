@@ -1,7 +1,9 @@
 from typing import Generator, Optional, List
-import arxiv
 from arxivtrend.log import logger
-from arxivtrend.domain.entities import ArxivQueryEntity
+from arxivtrend.domain.entities import (
+    ArxivQueryEntity, ArxivSummaryEntity,
+)
+from arxivtrend.domain.repos import ArxivSearchRepo
 
 
 class ArxivApi():
@@ -10,21 +12,16 @@ class ArxivApi():
         self,
         q: ArxivQueryEntity,
         max_results: Optional[int] = float('inf')
-    ) -> Generator[arxiv.Result, None, None]:
+    ) -> Generator[ArxivSummaryEntity, None, None]:
         q_str = self.make_query_str(q)
         logger.debug(q_str)
 
-        search = arxiv.Search(
-            query=q_str,
-            sort_by=arxiv.SortCriterion.SubmittedDate,
-            max_results=max_results
-        )
-        for r in search.results():
+        for r in ArxivSearchRepo.search():
             yield r
 
     def store(
         self,
         q: ArxivQueryEntity,
-        results: List[arxiv.Result]
+        results: List[ArxivSummaryEntity]
     ) -> None:
         pass

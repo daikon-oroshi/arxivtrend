@@ -2,6 +2,7 @@ from typing import List
 from datetime import date
 from pydantic import BaseModel
 from .arxiv_query import ArxivQueryEntity
+import arxiv
 
 
 class ArxivSummaryEntity(BaseModel):
@@ -12,6 +13,21 @@ class ArxivSummaryEntity(BaseModel):
     authors: List[str]
     summary: str
     categories: List[str]
+
+    @classmethod
+    def from_arxiv_result(
+        self,
+        result: arxiv.Result
+    ) -> "ArxivSummaryEntity":
+        return ArxivSummaryEntity(
+            entry_id=result.entry_id,
+            updated=result.updated,
+            published=result.published,
+            title=result.title,
+            authors=result.authors,
+            summary=result.summary,
+            categories=result.categories
+        )
 
 
 class ArxivResultEntity(BaseModel):
