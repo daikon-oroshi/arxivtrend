@@ -1,16 +1,6 @@
 from typing import List, TypedDict
 
 
-def get_partial_match_taxonomies(cat_q: str) -> List[str]:
-    ret = []
-    for taxos in taxonomies.values():
-        ret.extend([
-            t for t in taxos
-            if cat_q in t
-        ])
-    return ret
-
-
 class Taxonomies(TypedDict):
     computer_sience: List[str]
     economics: List[str]

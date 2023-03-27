@@ -1,6 +1,6 @@
 import argparse
 from datetime import date
-from arxivtrend.arxiv_api import ArxivApi, Query
+from arxivtrend.domain.services import ArxivApi, Query
 
 
 def parse_date_str(date_str: str) -> date:
