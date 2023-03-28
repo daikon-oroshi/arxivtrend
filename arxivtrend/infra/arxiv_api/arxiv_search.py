@@ -46,8 +46,7 @@ class ArxivSearch(ArxivTaxonomyRepo):
             f"ti:\"{query.search_q}\""
         )
 
-        taxos = ArxivTaxonomyRepo. \
-            get_partial_match_taxonomies(query.category)
+        taxos = self.get_partial_match_taxonomies(query.category)
 
         if taxos:
             sep = " OR "

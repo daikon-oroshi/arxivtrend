@@ -6,10 +6,10 @@ from arxivtrend.domain.entities import (
 )
 
 
-class ArxivResultRepo(metaclass=ABCMeta):
+class ArxivCacheRepoImpl(metaclass=ABCMeta):
 
     @abstractmethod
-    def exists_same_query(
+    def already_cached(
         self,
         q: ArxivQueryEntity
     ) -> bool:

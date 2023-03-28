@@ -16,7 +16,7 @@ class ArxivSummaryEntity(BaseModel):
 
     @classmethod
     def from_arxiv_result(
-        self,
+        cls,
         result: arxiv.Result
     ) -> "ArxivSummaryEntity":
         return ArxivSummaryEntity(

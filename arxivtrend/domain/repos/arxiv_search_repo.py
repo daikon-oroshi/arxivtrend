@@ -5,7 +5,7 @@ from arxivtrend.domain.entities import (
 )
 
 
-class ArxivSearchRepo(metaclass=ABCMeta):
+class ArxivSearchRepoImpl(metaclass=ABCMeta):
 
     @abstractmethod
     @staticmethod
