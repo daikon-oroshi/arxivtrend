@@ -6,20 +6,20 @@ from arxivtrend.domain.entities import (
     ArxivSummaryEntity
 )
 from arxivtrend.infra.mongo.models import (
-    ArxivResult
+    ArxivResult, ArxivSummary
 )
 
 
 class ArxivCacheRepo(ArxivCacheRepoImpl):
 
-    def exists_same_query(
+    def already_cached(
         self,
         q: ArxivQueryEntity
     ) -> bool:
-        return ArxivResult.objects.count(
+        return ArxivResult.objects(
             search_q=q.search_q,
             category=q.category
-        ) > 0
+        ).count() > 0
 
     def get_query(
         self,
@@ -52,7 +52,7 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         if doc is None:
             return None
 
-        doc.results.fetch()
+        # doc.summaries.fetch()
         return doc.to_entity()
 
     def store(
@@ -60,7 +60,7 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         query: ArxivQueryEntity,
         results: List[ArxivSummaryEntity]
     ):
-        doc: ArxivResult = ArxivResult.objects(
+        doc: ArxivResult = ArxivResult.objects.filter(
             search_q=query.search_q,
             category=query.category
         ).first()
@@ -68,12 +68,14 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         if doc is not None:
             doc.update(push_all__results=results)
         else:
-            doc = ArxivResult.from_entity(
-                ArxivResultEntity(
-                    query=query,
-                    results=results
-                )
-            )
+            summaries = [
+                ArxivSummary.from_entity(r)
+                for r in results
+            ]
+
+            doc = ArxivResult.from_query_entity(query)
+            ArxivSummary.objects.insert(summaries)
+            doc.summaries = summaries
             doc.save()
 
     def delete(
@@ -86,4 +88,7 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         ).first()
 
         if doc is not None:
+            ArxivSummary.objects().filter(pk__in=[
+                s.pk for s in doc.summaries
+            ]).delete()
             doc.delete()

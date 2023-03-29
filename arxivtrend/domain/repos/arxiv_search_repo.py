@@ -7,10 +7,8 @@ from arxivtrend.domain.entities import (
 
 class ArxivSearchRepoImpl(metaclass=ABCMeta):
 
-    @abstractmethod
     @staticmethod
     def get_partial_match_taxonomies(
-        self,
         category_q: str
     ) -> List[str]:
         pass

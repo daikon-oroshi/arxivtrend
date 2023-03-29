@@ -1,8 +1,8 @@
 from mongoengine import (
     Document, StringField,
     DateTimeField,
-    ListField, LazyReferenceField,
-    CASCADE
+    ListField, ReferenceField,
+    PULL
 )
 from arxivtrend.domain.entities import (
     ArxivSummaryEntity, ArxivResultEntity,
@@ -11,21 +11,20 @@ from arxivtrend.domain.entities import (
 
 
 class ArxivSummary(Document):
-    entry_id: StringField(max_length=200, required=True)
-    updated: DateTimeField()
-    published: DateTimeField()
-    title: StringField()
-    authors: ListField(StringField())
-    summary: StringField()
-    categories: ListField(StringField())
+    entry_id = StringField(max_length=200, required=True)
+    updated = DateTimeField()
+    published = DateTimeField()
+    title = StringField()
+    authors = ListField(StringField())
+    summary = StringField()
+    categories = ListField(StringField())
 
     meta = {
         'ordering': ['entry_id'],
     }
 
-    @classmethod
+    @staticmethod
     def from_entity(
-        cls,
         entity: ArxivSummaryEntity
     ) -> "ArxivSummary":
         return ArxivSummary(
@@ -53,39 +52,46 @@ class ArxivSummary(Document):
 
 
 class ArxivResult(Document):
-    search_q: StringField(max_length=200, required=True)
-    submitted_begin: DateTimeField()
-    submitted_end: DateTimeField()
-    category: StringField(max_length=200, required=True)
-    summaries: LazyReferenceField(
-        ListField(ArxivSummary()),
-        reverse_delete_rule=CASCADE
+    search_q = StringField(max_length=200, required=True)
+    submitted_begin = DateTimeField()
+    submitted_end = DateTimeField()
+    category = StringField(max_length=200, required=True)
+    summaries = ListField(
+        ReferenceField(ArxivSummary),
+        reverse_delete_rule=PULL
     )
 
     meta = {
         'indexes': [
             {
-                'fields': ['search_q', 'category'],
+                'fields': ['$search_q', '$category'],
                 'unique': True
             }
         ]
     }
 
-    @classmethod
-    def from_entity(
-        cls,
-        entity: ArxivResultEntity
+    @staticmethod
+    def from_query_entity(
+        entity: ArxivQueryEntity,
     ) -> "ArxivResult":
         return ArxivResult(
-            search_q=entity.query.search_q,
-            submitted_begin=entity.query.submitted_begin,
-            submitted_end=entity.query.submitted_end,
-            category=entity.query.category,
-            summaries=[
-                ArxivSummary.from_entity(r)
-                for r in entity.results
-            ]
+            search_q=entity.search_q,
+            submitted_begin=entity.submitted_begin,
+            submitted_end=entity.submitted_end,
+            category=entity.category,
+            summaries=[]
         )
+
+    @staticmethod
+    def from_entity(
+        entity: ArxivResultEntity,
+    ) -> "ArxivResult":
+        ret = ArxivResult.from_query_entity(entity.query)
+        ret.summaries = [
+            ArxivSummary.from_entity(r)
+            for r in entity.results
+        ]
+        return ret
 
     def to_entity(
         self

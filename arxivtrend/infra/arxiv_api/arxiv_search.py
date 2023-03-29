@@ -10,7 +10,9 @@ from arxivtrend.domain.entities import (
 
 class ArxivSearch(ArxivTaxonomyRepo):
     @staticmethod
-    def get_partial_match_taxonomies(cat_q: str) -> List[str]:
+    def get_partial_match_taxonomies(
+        cat_q: str
+    ) -> List[str]:
         if cat_q is None or cat_q == "":
             return []
 
