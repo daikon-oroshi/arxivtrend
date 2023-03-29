@@ -60,21 +60,22 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         query: ArxivQueryEntity,
         results: List[ArxivSummaryEntity]
     ):
+
         doc: ArxivResult = ArxivResult.objects.filter(
             search_q=query.search_q,
             category=query.category
         ).first()
 
-        if doc is not None:
-            doc.update(push_all__results=results)
-        else:
-            summaries = [
-                ArxivSummary.from_entity(r)
-                for r in results
-            ]
+        summaries = [
+            ArxivSummary.from_entity(r)
+            for r in results
+        ]
+        ArxivSummary.objects.insert(summaries)
 
+        if doc is not None:
+            doc.update(push_all__summaries=summaries)
+        else:
             doc = ArxivResult.from_query_entity(query)
-            ArxivSummary.objects.insert(summaries)
             doc.summaries = summaries
             doc.save()
 

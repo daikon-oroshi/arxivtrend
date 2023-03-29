@@ -3,7 +3,7 @@ import datetime
 from arxivtrend.infra.mongo.arxiv_cache import ArxivCacheRepo
 
 from arxivtrend.infra.mongo.models import (
-    ArxivResult
+    ArxivResult, ArxivSummary
 )
 from arxivtrend.domain.entities import (
     ArxivQueryEntity, ArxivSummaryEntity,
@@ -43,11 +43,17 @@ class TestArxivCacheRepo(unittest.TestCase):
         repo.delete(self.TEST_QUERY_ENTITY)
 
     def test_store(self):
+        repo = ArxivCacheRepo()
+
         self.assertEqual(
             ArxivResult.objects.count(),
             0
         )
-        repo = ArxivCacheRepo()
+        self.assertEqual(
+            ArxivSummary.objects.count(),
+            0
+        )
+
         repo.store(
             self.TEST_QUERY_ENTITY,
             self.TEST_ARXIV_SUMMARY_ENTITIES
@@ -55,6 +61,23 @@ class TestArxivCacheRepo(unittest.TestCase):
         self.assertEqual(
             ArxivResult.objects.count(),
             1
+        )
+        self.assertEqual(
+            ArxivSummary.objects.count(),
+            1
+        )
+
+        repo.store(
+            self.TEST_QUERY_ENTITY,
+            self.TEST_ARXIV_SUMMARY_ENTITIES
+        )
+        self.assertEqual(
+            ArxivResult.objects.count(),
+            1
+        )
+        self.assertEqual(
+            ArxivSummary.objects.count(),
+            2
         )
 
     def test_already_cached(self):
