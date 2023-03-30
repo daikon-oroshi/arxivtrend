@@ -1,14 +1,14 @@
 from typing import List, Optional, Generator
 import arxiv
 
-from arxivtrend.domain.repos import ArxivTaxonomyRepo
+from arxivtrend.domain.repos import ArxivSearchImpl
 from .taxonomies import taxonomies
 from arxivtrend.domain.entities import (
     ArxivQueryEntity, ArxivSummaryEntity
 )
 
 
-class ArxivSearch(ArxivTaxonomyRepo):
+class ArxivSearch(ArxivSearchImpl):
     @staticmethod
     def get_partial_match_taxonomies(
         cat_q: str
@@ -36,7 +36,7 @@ class ArxivSearch(ArxivTaxonomyRepo):
             max_results=max_results
         )
 
-        for r in search.result():
+        for r in search.results():
             yield ArxivSummaryEntity.from_arxiv_result(r)
 
     def make_query_str(
@@ -64,3 +64,10 @@ class ArxivSearch(ArxivTaxonomyRepo):
         q.append(duration)
 
         return " AND ".join(q)
+
+    def count(
+        self,
+        q: ArxivQueryEntity
+    ) -> int:
+        # arxiv api に件数取得api がないので pending
+        raise NotImplementedError()

@@ -80,25 +80,6 @@ class TestArxivCacheRepo(unittest.TestCase):
             2
         )
 
-    def test_already_cached(self):
-        repo = ArxivCacheRepo()
-        self.assertEqual(
-            repo.already_cached(
-                self.TEST_QUERY_ENTITY
-            ),
-            False
-        )
-        repo.store(
-            self.TEST_QUERY_ENTITY,
-            self.TEST_ARXIV_SUMMARY_ENTITIES
-        )
-        self.assertEqual(
-            repo.already_cached(
-                self.TEST_QUERY_ENTITY
-            ),
-            True
-        )
-
     def test_get(self):
         repo = ArxivCacheRepo()
         repo.store(
@@ -106,7 +87,7 @@ class TestArxivCacheRepo(unittest.TestCase):
             self.TEST_ARXIV_SUMMARY_ENTITIES
         )
 
-        query = repo.get_query(
+        query = repo.get_cached_query(
             self.TEST_QUERY_ENTITY
         )
 
@@ -130,10 +111,10 @@ class TestArxivCacheRepo(unittest.TestCase):
 
         repo.delete(self.TEST_QUERY_ENTITY)
         self.assertEqual(
-            repo.already_cached(
+            repo.get_cached_query(
                 self.TEST_QUERY_ENTITY
             ),
-            False
+            None
         )
 
 

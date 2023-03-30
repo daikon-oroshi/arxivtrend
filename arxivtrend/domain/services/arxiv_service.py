@@ -1,27 +1,47 @@
-from typing import Generator, Optional, List
 from arxivtrend.log import logger
 from arxivtrend.domain.entities import (
-    ArxivQueryEntity, ArxivSummaryEntity,
+    ArxivQueryEntity
 )
-from arxivtrend.domain.repos import ArxivSearchRepo
+from arxivtrend.domain.repos \
+    import ArxivSearchImpl, ArxivCacheRepoImpl
+from arxivtrend.infra.arxiv_api.arxiv_search \
+      import ArxivSearch
+from arxivtrend.infra.mongo.arxiv_cache import ArxivCacheRepo
 
 
-class ArxivApi():
+class ArxivService():
 
-    def search(
+    BUFF_SIZE = 500
+
+    search_repo: ArxivSearchImpl = ArxivSearch()
+    cache_repo: ArxivCacheRepoImpl = ArxivCacheRepo()
+
+    def __log_of_count_of_papers(self, count: int):
+        print(f"\r Count of papers: {count}\n", end="")
+
+    def search_and_cache(
         self,
-        q: ArxivQueryEntity,
-        max_results: Optional[int] = float('inf')
-    ) -> Generator[ArxivSummaryEntity, None, None]:
-        q_str = self.make_query_str(q)
-        logger.debug(q_str)
+        q: ArxivQueryEntity
+    ):
+        buffer = []
+        count = 0
+        for r in self.search_repo.search(q):
+            buffer.append(r)
+            count = count + 1
 
-        for r in ArxivSearchRepo.search():
-            yield r
+            if len(buffer) >= self.BUFF_SIZE:
+                self.cache_repo.store(
+                    q,
+                    buffer
+                )
+                buffer = []
+                self.__log_of_count_of_papers(count)
 
-    def store(
-        self,
-        q: ArxivQueryEntity,
-        results: List[ArxivSummaryEntity]
-    ) -> None:
-        pass
+        else:
+            if len(buffer) > 0:
+                self.cache_repo.store(
+                    q,
+                    buffer
+                )
+        self.__log_of_count_of_papers(count)
+        logger.info(f"get {count} papers")

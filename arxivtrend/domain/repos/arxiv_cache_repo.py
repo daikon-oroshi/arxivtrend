@@ -9,18 +9,18 @@ from arxivtrend.domain.entities import (
 class ArxivCacheRepoImpl(metaclass=ABCMeta):
 
     @abstractmethod
-    def already_cached(
+    def get_cached_query(
         self,
         q: ArxivQueryEntity
-    ) -> bool:
-        pass
+    ) -> ArxivQueryEntity:
+        raise NotImplementedError()
 
     @abstractmethod
     def get(
         self,
         q: ArxivQueryEntity
     ) -> ArxivResultEntity:
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def store(
@@ -28,4 +28,17 @@ class ArxivCacheRepoImpl(metaclass=ABCMeta):
         q: ArxivQueryEntity,
         results: List[arxiv.Result]
     ):
-        pass
+        raise NotImplementedError()
+
+    @abstractmethod
+    def delete(
+        self,
+        q: ArxivQueryEntity,
+    ):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def delete_all(
+        self
+    ):
+        raise NotImplementedError()

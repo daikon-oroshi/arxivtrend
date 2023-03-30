@@ -6,8 +6,8 @@ from pydantic import BaseModel, validator
 # 本当は value object
 class ArxivQueryEntity(BaseModel):
     search_q: str
-    submitted_begin: date = date(1991, 1, 1)
-    submitted_end: date = date.today()
+    submitted_begin: Optional[date] = date(1991, 1, 1)
+    submitted_end: Optional[date] = date.today()
     category: str
 
     @validator("submitted_begin")

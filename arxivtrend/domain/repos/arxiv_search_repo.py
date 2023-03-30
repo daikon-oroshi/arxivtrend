@@ -5,13 +5,13 @@ from arxivtrend.domain.entities import (
 )
 
 
-class ArxivSearchRepoImpl(metaclass=ABCMeta):
+class ArxivSearchImpl(metaclass=ABCMeta):
 
     @staticmethod
     def get_partial_match_taxonomies(
         category_q: str
     ) -> List[str]:
-        pass
+        raise NotImplementedError()
 
     @abstractmethod
     def search(
@@ -19,4 +19,11 @@ class ArxivSearchRepoImpl(metaclass=ABCMeta):
         q: ArxivQueryEntity,
         max_results: Optional[int] = float('inf')
     ) -> Generator[ArxivSummaryEntity, None, None]:
-        pass
+        raise NotImplementedError()
+
+    @abstractmethod
+    def count(
+        self,
+        q: ArxivQueryEntity
+    ) -> int:
+        raise NotImplementedError()

@@ -24,7 +24,7 @@ class ArxivSummaryEntity(BaseModel):
             updated=result.updated,
             published=result.published,
             title=result.title,
-            authors=result.authors,
+            authors=[a.name for a in result.authors],
             summary=result.summary,
             categories=result.categories
         )

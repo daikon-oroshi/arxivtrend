@@ -1,1 +1,1 @@
-from arxivtrend.domain.services.arxiv_service import ArxivApi, Query  # noqa
+from arxivtrend.domain.services.arxiv_service import ArxivService  # noqa

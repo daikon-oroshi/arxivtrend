@@ -12,16 +12,7 @@ from arxivtrend.infra.mongo.models import (
 
 class ArxivCacheRepo(ArxivCacheRepoImpl):
 
-    def already_cached(
-        self,
-        q: ArxivQueryEntity
-    ) -> bool:
-        return ArxivResult.objects(
-            search_q=q.search_q,
-            category=q.category
-        ).count() > 0
-
-    def get_query(
+    def get_cached_query(
         self,
         q: ArxivQueryEntity
     ) -> ArxivQueryEntity:
@@ -52,7 +43,6 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
         if doc is None:
             return None
 
-        # doc.summaries.fetch()
         return doc.to_entity()
 
     def store(
@@ -93,3 +83,9 @@ class ArxivCacheRepo(ArxivCacheRepoImpl):
                 s.pk for s in doc.summaries
             ]).delete()
             doc.delete()
+
+    def delete_all(
+        self
+    ):
+        ArxivSummary.objects().delete()
+        ArxivResult.objects().delete()
