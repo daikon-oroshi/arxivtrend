@@ -44,7 +44,7 @@ class SearchUsecase():
                     "Do you want to reacquire? y or n ? >> "
                 yn = input(msg)
 
-                if yn in ['y', 'Y', 'yes', 'Yes', 'YES']:
+                if yn.lower() in ['y', 'yes']:
                     self.delete_cache(query)
                     self.arxiv_service.search_and_cache(query)
                 else:
