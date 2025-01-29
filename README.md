@@ -25,10 +25,15 @@ docker compose build
 
 1. DBの起動
 ```
-docker compose up -d
+docker compose up -d mongo
 ```
 
 1. プログラムの実行
 ```
 poetry run python -m arxivtrend.main search [search_query] -b [submitted_begin] -e [submitted_end]
+```
+
+1. PDF化
+```
+FILE=report/[ファイル名].adoc docker compose up adoc
 ```

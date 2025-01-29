@@ -26,5 +26,13 @@ services:
     depends_on:
       - mongo
 
+  adoc:
+    build: ./docker/report/
+    volumes:
+      - ./report:/report
+    environment:
+      - FILE
+    command: asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -n /${FILE}
+
 networks:
   mongo_network:
