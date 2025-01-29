@@ -1,1 +1,0 @@
-from arxivtrend.domain.services.arxiv_service import ArxivService  # noqa

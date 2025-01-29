@@ -1,16 +1,16 @@
-from typing import List, Optional, Generator
+from typing import List, Generator
 import arxiv
 
-from arxivtrend.domain.repos import ArxivSearchImpl
 from .taxonomies import taxonomies
 from arxivtrend.domain.entities import (
     ArxivQueryEntity, ArxivSummaryEntity
 )
 
 
-class ArxivSearch(ArxivSearchImpl):
-    @staticmethod
+class ArxivSearch():
+
     def get_partial_match_taxonomies(
+        self,
         cat_q: str
     ) -> List[str]:
         if cat_q is None or cat_q == "":
@@ -27,13 +27,14 @@ class ArxivSearch(ArxivSearchImpl):
     def search(
         self,
         q: ArxivQueryEntity,
-        max_results: Optional[int] = float('inf')
+        max_results: int | None = None
     ) -> Generator[ArxivSummaryEntity, None, None]:
-
+        max_res = max_results if max_results is not None \
+                else float('inf')
         search = arxiv.Search(
             query=self.make_query_str(q),
             sort_by=arxiv.SortCriterion.SubmittedDate,
-            max_results=max_results
+            max_results=max_res
         )
 
         for r in search.results():

@@ -1,23 +1,21 @@
-from typing import List, Optional, Generator
+from typing import Generator
 from abc import ABCMeta, abstractmethod
 from arxivtrend.domain.entities import (
     ArxivQueryEntity, ArxivSummaryEntity
 )
+from arxivtrend.infra.arxiv_api import ArxivSearch
 
 
 class ArxivSearchImpl(metaclass=ABCMeta):
 
-    @staticmethod
-    def get_partial_match_taxonomies(
-        category_q: str
-    ) -> List[str]:
-        raise NotImplementedError()
+    def __init__(self):
+        self.arxiv_search = ArxivSearch()
 
     @abstractmethod
     def search(
         self,
         q: ArxivQueryEntity,
-        max_results: Optional[int] = float('inf')
+        max_results: int | None = None
     ) -> Generator[ArxivSummaryEntity, None, None]:
         raise NotImplementedError()
 

@@ -1,6 +1,5 @@
 from typing import List, Optional
 from . import engine  # noqa
-from arxivtrend.domain.repos import ArxivCacheRepoImpl
 from arxivtrend.domain.entities import (
     ArxivQueryEntity, ArxivResultEntity,
     ArxivSummaryEntity
@@ -10,7 +9,7 @@ from arxivtrend.infra.mongo.models import (
 )
 
 
-class ArxivCacheRepo(ArxivCacheRepoImpl):
+class ArxivCacheRepo():
 
     def get_cached_query(
         self,

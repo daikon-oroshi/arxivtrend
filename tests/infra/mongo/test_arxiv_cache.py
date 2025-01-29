@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from arxivtrend.infra.mongo.arxiv_cache import ArxivCacheRepo
+from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
 
 from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary

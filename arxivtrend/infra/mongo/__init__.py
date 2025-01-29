@@ -1,1 +1,1 @@
-from arxivtrend.infra.mongo.arxiv_cache import ArxivCacheRepo  # noqa
+from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo  # noqa
