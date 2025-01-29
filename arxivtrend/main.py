@@ -1,8 +1,8 @@
 import click
 from datetime import date
 from arxivtrend.apps import SearchUsecase
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity
+from arxivtrend.domain.search import (
+    ArxivQuery
 )
 
 
@@ -64,7 +64,7 @@ def search(
     category: str,
     force_reacquire: bool = False
 ):
-    query = ArxivQueryEntity(
+    query = ArxivQuery(
         search_q=search_query,
         submitted_begin=begin,
         submitted_end=end,
@@ -88,7 +88,7 @@ def delete(
     end: date | None,
     category: str,
 ):
-    query = ArxivQueryEntity(
+    query = ArxivQuery(
         search_q=q,
         submitted_begin=begin,
         submitted_end=end,

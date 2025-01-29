@@ -1,7 +1,7 @@
 from typing import Generator
 from abc import ABCMeta, abstractmethod
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity, ArxivSummaryEntity
+from arxivtrend.domain.search.entities import (
+    ArxivQuery, ArxivSummaryEntity
 )
 from arxivtrend.infra.arxiv_api import ArxivSearch
 
@@ -14,7 +14,7 @@ class ArxivSearchImpl(metaclass=ABCMeta):
     @abstractmethod
     def search(
         self,
-        q: ArxivQueryEntity,
+        q: ArxivQuery,
         max_results: int | None = None
     ) -> Generator[ArxivSummaryEntity, None, None]:
         raise NotImplementedError()
@@ -22,6 +22,6 @@ class ArxivSearchImpl(metaclass=ABCMeta):
     @abstractmethod
     def count(
         self,
-        q: ArxivQueryEntity
+        q: ArxivQuery
     ) -> int:
         raise NotImplementedError()

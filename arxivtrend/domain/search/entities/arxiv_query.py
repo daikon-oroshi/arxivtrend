@@ -4,7 +4,7 @@ from pydantic import BaseModel, validator
 
 
 # 本当は value object
-class ArxivQueryEntity(BaseModel):
+class ArxivQuery(BaseModel):
     search_q: str
     submitted_begin: Optional[date] = date(1991, 1, 1)
     submitted_end: Optional[date] = date.today()

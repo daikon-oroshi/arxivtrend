@@ -5,8 +5,8 @@ from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
 from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary
 )
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity, ArxivSummaryEntity,
+from arxivtrend.domain.search.entities import (
+    ArxivQuery, ArxivSummaryEntity,
     ArxivResultEntity
 )
 
@@ -21,7 +21,7 @@ def is_db_initial_state():
 )
 class TestArxivCacheRepo(unittest.TestCase):
 
-    TEST_QUERY_ENTITY = ArxivQueryEntity(
+    TEST_QUERY_ENTITY = ArxivQuery(
         search_q="test",
         category="test"
     )

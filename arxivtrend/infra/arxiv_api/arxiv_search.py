@@ -2,8 +2,8 @@ from typing import List, Generator
 import arxiv
 
 from .taxonomies import taxonomies
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity, ArxivSummaryEntity
+from arxivtrend.domain.search import (
+    ArxivQuery, ArxivSummaryEntity
 )
 
 
@@ -26,7 +26,7 @@ class ArxivSearch():
 
     def search(
         self,
-        q: ArxivQueryEntity,
+        q: ArxivQuery,
         max_results: int | None = None
     ) -> Generator[ArxivSummaryEntity, None, None]:
         max_res = max_results if max_results is not None \
@@ -42,7 +42,7 @@ class ArxivSearch():
 
     def make_query_str(
         self,
-        query: ArxivQueryEntity
+        query: ArxivQuery
     ) -> str:
         q = []
         q.append(
@@ -68,7 +68,7 @@ class ArxivSearch():
 
     def count(
         self,
-        q: ArxivQueryEntity
+        q: ArxivQuery
     ) -> int:
         # arxiv api に件数取得api がないので pending
         raise NotImplementedError()

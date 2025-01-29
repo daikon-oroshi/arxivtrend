@@ -1,7 +1,7 @@
 from typing import List
 from datetime import date
 from pydantic import BaseModel
-from .arxiv_query import ArxivQueryEntity
+from .arxiv_query import ArxivQuery
 import arxiv
 
 
@@ -31,5 +31,5 @@ class ArxivSummaryEntity(BaseModel):
 
 
 class ArxivResultEntity(BaseModel):
-    query: ArxivQueryEntity
+    query: ArxivQuery
     results: List[ArxivSummaryEntity]

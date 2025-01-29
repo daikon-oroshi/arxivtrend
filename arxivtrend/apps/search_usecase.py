@@ -1,6 +1,6 @@
 from arxivtrend.log import logger
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity
+from arxivtrend.domain.search.entities import (
+    ArxivQuery
 )
 from arxivtrend.domain.search import (
     SearchService, ArxivCacheRepoImpl,
@@ -19,7 +19,7 @@ class SearchUsecase():
 
     def search_and_cache_arxiv(
         self,
-        query: ArxivQueryEntity,
+        query: ArxivQuery,
         force_reacquire: bool
     ):
         cached_state = self.search_service.get_cache_state(query)
@@ -56,7 +56,7 @@ class SearchUsecase():
 
     def delete_cache(
         self,
-        query: ArxivQueryEntity
+        query: ArxivQuery
     ):
         self.cache_repo.delete(query)
 

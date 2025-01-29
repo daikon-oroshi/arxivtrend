@@ -1,7 +1,7 @@
 from typing import List, Optional
 from . import engine  # noqa
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity, ArxivResultEntity,
+from arxivtrend.domain.search import (
+    ArxivQuery, ArxivResultEntity,
     ArxivSummaryEntity
 )
 from arxivtrend.infra.mongo.models import (
@@ -13,8 +13,8 @@ class ArxivCacheRepo():
 
     def get_cached_query(
         self,
-        q: ArxivQueryEntity
-    ) -> ArxivQueryEntity:
+        q: ArxivQuery
+    ) -> ArxivQuery:
         result: ArxivResult = ArxivResult.objects(
             search_q=q.search_q,
             category=q.category
@@ -23,7 +23,7 @@ class ArxivCacheRepo():
         if result is None:
             return None
 
-        return ArxivQueryEntity(
+        return ArxivQuery(
             search_q=result.search_q,
             category=result.category,
             submitted_begin=result.submitted_begin,
@@ -32,7 +32,7 @@ class ArxivCacheRepo():
 
     def get(
         self,
-        q: ArxivQueryEntity
+        q: ArxivQuery
     ) -> Optional[ArxivResultEntity]:
         doc = ArxivResult.objects(
             search_q=q.search_q,
@@ -46,7 +46,7 @@ class ArxivCacheRepo():
 
     def store(
         self,
-        query: ArxivQueryEntity,
+        query: ArxivQuery,
         results: List[ArxivSummaryEntity]
     ):
 
@@ -70,7 +70,7 @@ class ArxivCacheRepo():
 
     def delete(
         self,
-        query: ArxivQueryEntity,
+        query: ArxivQuery,
     ):
         doc: ArxivResult = ArxivResult.objects(
             search_q=query.search_q,

@@ -4,9 +4,9 @@ from mongoengine import (
     ListField, ReferenceField,
     PULL
 )
-from arxivtrend.domain.entities import (
+from arxivtrend.domain.search.entities import (
     ArxivSummaryEntity, ArxivResultEntity,
-    ArxivQueryEntity
+    ArxivQuery
 )
 
 
@@ -72,7 +72,7 @@ class ArxivResult(Document):
 
     @staticmethod
     def from_query_entity(
-        entity: ArxivQueryEntity,
+        entity: ArxivQuery,
     ) -> "ArxivResult":
         return ArxivResult(
             search_q=entity.search_q,
@@ -97,7 +97,7 @@ class ArxivResult(Document):
         self
     ) -> ArxivResultEntity:
         return ArxivResultEntity(
-            query=ArxivQueryEntity(
+            query=ArxivQuery(
                 search_q=self.search_q,
                 submitted_begin=self.submitted_begin,
                 submitted_end=self.submitted_end,

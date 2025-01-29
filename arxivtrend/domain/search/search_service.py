@@ -1,10 +1,7 @@
 from arxivtrend.log import logger
-from arxivtrend.domain.entities import (
-    ArxivQueryEntity
-)
 from arxivtrend.domain.search import (
     ArxivSearchImpl, ArxivCacheRepoImpl,
-    CacheState
+    CacheState, ArxivQuery
 )
 from arxivtrend.infra.arxiv_api.arxiv_search \
       import ArxivSearch
@@ -23,7 +20,7 @@ class SearchService():
 
     def get_cache_state(
         self,
-        query: ArxivQueryEntity
+        query: ArxivQuery
     ) -> CacheState:
         cached_q = self.cache_repo.get_cached_query(query)
         if cached_q is None:
@@ -36,7 +33,7 @@ class SearchService():
 
     def search_and_cache(
         self,
-        q: ArxivQueryEntity
+        q: ArxivQuery
     ):
         buffer = []
         count = 0
