@@ -21,7 +21,7 @@ dec_begin_arg = click.option(
         '-b',
         'begin',
         type=click.DateTime(),
-        default=date(1991, 1, 1),
+        default="1991-01-01",
         help='ex. 2020-01-01.'
     )
 
@@ -30,7 +30,7 @@ dec_end_arg = click.option(
         '-e',
         'end',
         type=click.DateTime(),
-        default=date.today(),
+        default=date.today().strftime("%Y-%m-%d"),
         help='ex. 2045-12-31.'
     )
 
