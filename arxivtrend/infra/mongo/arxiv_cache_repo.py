@@ -1,6 +1,6 @@
 from typing import List, Optional
 from . import engine  # noqa
-from arxivtrend.domain.search import (
+from arxivtrend.domain.entities import (
     ArxivQuery, ArxivResultEntity,
     ArxivSummaryEntity
 )

@@ -4,7 +4,7 @@ from mongoengine import (
     ListField, ReferenceField,
     PULL
 )
-from arxivtrend.domain.search.entities import (
+from arxivtrend.domain.entities import (
     ArxivSummaryEntity, ArxivResultEntity,
     ArxivQuery
 )

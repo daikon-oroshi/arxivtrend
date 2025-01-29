@@ -2,7 +2,7 @@ from typing import List, Generator
 import arxiv
 
 from .taxonomies import taxonomies
-from arxivtrend.domain.search import (
+from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
 

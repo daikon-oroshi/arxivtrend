@@ -1,6 +1,6 @@
 from typing import Generator
 from abc import ABCMeta, abstractmethod
-from arxivtrend.domain.search.entities import (
+from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
 from arxivtrend.infra.arxiv_api import ArxivSearch

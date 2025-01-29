@@ -1,7 +1,7 @@
 import click
 from datetime import date
 from arxivtrend.apps import SearchUsecase
-from arxivtrend.domain.search import (
+from arxivtrend.domain.entities import (
     ArxivQuery
 )
 

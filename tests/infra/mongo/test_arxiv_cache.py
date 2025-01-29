@@ -5,7 +5,7 @@ from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
 from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary
 )
-from arxivtrend.domain.search.entities import (
+from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity,
     ArxivResultEntity
 )

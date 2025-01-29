@@ -1,7 +1,7 @@
 from typing import List
 from abc import ABCMeta, abstractmethod
 import arxiv
-from arxivtrend.domain.search.entities import (
+from arxivtrend.domain.entities import (
     ArxivQuery, ArxivResultEntity
 )
 
