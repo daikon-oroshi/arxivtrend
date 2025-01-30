@@ -1,7 +1,7 @@
 from typing import List, Generator
 import arxiv
 
-from .taxonomies import taxonomies
+from arxivtrend.infra.arxiv_api.taxonomies import taxonomies
 from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
@@ -23,6 +23,9 @@ class ArxivSearch():
                 if cat_q in t
             ])
         return ret
+
+    def get_categories(self) -> dict:
+        return taxonomies
 
     def search(
         self,

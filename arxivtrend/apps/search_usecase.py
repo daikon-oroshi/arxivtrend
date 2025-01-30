@@ -1,3 +1,4 @@
+import json
 from arxivtrend.log import logger
 from arxivtrend.domain.entities import (
     ArxivQuery
@@ -6,8 +7,8 @@ from arxivtrend.domain.search import (
     SearchService, ArxivCacheRepoImpl,
     CacheState
 )
-from arxivtrend.infra.mongo.arxiv_cache_repo import (
-    ArxivCacheRepo
+from arxivtrend.infra.repo import (
+    ArxivCacheRepo, ArxivSearch
 )
 
 
@@ -15,6 +16,7 @@ class SearchUsecase():
 
     def __init__(self):
         self.search_service = SearchService()
+        self.arvix_search = ArxivSearch()
         self.cache_repo: ArxivCacheRepoImpl = ArxivCacheRepo()
 
     def search_and_cache_arxiv(
@@ -62,3 +64,7 @@ class SearchUsecase():
 
     def delete_cache_all(self):
         self.cache_repo.delete_all()
+
+    def show_categories(self) -> dict:
+        categories = self.arvix_search.get_categories()
+        print(json.dumps(categories, indent=2))

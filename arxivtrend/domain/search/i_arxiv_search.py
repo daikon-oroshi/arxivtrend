@@ -3,13 +3,13 @@ from abc import ABCMeta, abstractmethod
 from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
-from arxivtrend.infra.arxiv_api import ArxivSearch
 
 
 class ArxivSearchImpl(metaclass=ABCMeta):
 
-    def __init__(self):
-        self.arxiv_search = ArxivSearch()
+    @abstractmethod
+    def get_categories(self) -> dict:
+        raise NotImplementedError()
 
     @abstractmethod
     def search(

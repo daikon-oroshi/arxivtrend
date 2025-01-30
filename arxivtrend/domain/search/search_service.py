@@ -4,9 +4,9 @@ from arxivtrend.domain.search import (
     ArxivSearchImpl, ArxivCacheRepoImpl,
     CacheState
 )
-from arxivtrend.infra.arxiv_api.arxiv_search \
-      import ArxivSearch
-from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
+from arxivtrend.infra.repo import (
+    ArxivCacheRepo, ArxivSearch
+)
 
 
 class SearchService():

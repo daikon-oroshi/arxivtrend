@@ -1,1 +1,1 @@
-from arxivtrend.infra.arxiv_api.arxiv_search import ArxivSearch  # noqa
+from arxivtrend.infra.arxiv_api.taxonomies import taxonomies, Taxonomies  # noqa

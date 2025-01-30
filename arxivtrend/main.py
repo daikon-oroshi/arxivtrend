@@ -7,7 +7,7 @@ from arxivtrend.domain.entities import (
 
 
 @click.group()
-def cli():
+def search_group():
     pass
 
 
@@ -51,7 +51,7 @@ dec_force_reacquire = click.option(
     )
 
 
-@cli.command()
+@search_group.command()
 @dec_search_q_arg
 @dec_begin_arg
 @dec_end_arg
@@ -77,7 +77,7 @@ def search(
     )
 
 
-@cli.command()
+@search_group.command()
 @dec_search_q_arg
 @dec_begin_arg
 @dec_end_arg
@@ -98,10 +98,16 @@ def delete(
     usecase.delete_cache(query)
 
 
-@cli.command()
+@search_group.command()
 def delete_all():
     usecase = SearchUsecase()
     usecase.delete_cache_all()
+
+
+@search_group.command()
+def show_categories():
+    usecase = SearchUsecase()
+    usecase.show_categories()
 
 
 def create_report():
@@ -109,4 +115,4 @@ def create_report():
 
 
 if __name__ == "__main__":
-    cli()
+    search_group()
