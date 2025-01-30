@@ -26,13 +26,13 @@ services:
     depends_on:
       - mongo
 
-  adoc:
+  report:
     build: ./docker/report/
     volumes:
       - ./report:/report
     environment:
       - FILE
-    command: asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -n /${FILE}
+    command: asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -r asciidoctor-diagram -a mermaid-puppeteer-config=/puppeteer-config.json -n /${FILE} --verbose
 
 networks:
   mongo_network:
