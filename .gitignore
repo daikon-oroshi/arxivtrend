@@ -1,5 +1,5 @@
-data/*
-!data/.gitkeep
+cache/*
+!cache/.gitkeep
 .env
 .vscode
 report/*
