@@ -1,5 +1,4 @@
 from typing import List, Optional
-from arxivtrend.infra.mongo import engine  # noqa
 from arxivtrend.domain.entities import (
     ArxivQuery, ArxivResultEntity,
     ArxivSummaryEntity

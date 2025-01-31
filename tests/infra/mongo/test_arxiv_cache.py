@@ -1,7 +1,6 @@
 import unittest
 import datetime
-from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
-
+from arxivtrend.infra.repo.arxiv_cache_repo import ArxivCacheRepo
 from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary
 )
@@ -9,6 +8,7 @@ from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity,
     ArxivResultEntity
 )
+from arxivtrend.infra.mongo.engine import Connection
 
 
 def is_db_initial_state():
@@ -119,4 +119,5 @@ class TestArxivCacheRepo(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    with Connection():
+        unittest.main()

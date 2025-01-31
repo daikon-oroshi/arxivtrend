@@ -34,13 +34,15 @@ class ArxivSearch():
     ) -> Generator[ArxivSummaryEntity, None, None]:
         max_res = max_results if max_results is not None \
                 else float('inf')
+        client = arxiv.Client()
+
         search = arxiv.Search(
             query=self.make_query_str(q),
             sort_by=arxiv.SortCriterion.SubmittedDate,
             max_results=max_res
         )
 
-        for r in search.results():
+        for r in client.results(search):
             yield ArxivSummaryEntity.from_arxiv_result(r)
 
     def make_query_str(

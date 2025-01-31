@@ -21,8 +21,8 @@ class ArxivSummaryEntity(BaseModel):
     ) -> "ArxivSummaryEntity":
         return ArxivSummaryEntity(
             entry_id=result.entry_id,
-            updated=result.updated,
-            published=result.published,
+            updated=result.updated.date(),
+            published=result.published.date(),
             title=result.title,
             authors=[a.name for a in result.authors],
             summary=result.summary,

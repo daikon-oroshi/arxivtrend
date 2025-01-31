@@ -1,5 +1,5 @@
-from pydantic import (
-    BaseSettings, validator
+from pydantic_settings import (
+    BaseSettings, SettingsConfigDict
 )
 
 
@@ -11,9 +11,13 @@ class Env(BaseSettings):
     MONGO_USER: str
     MONGO_PASSWORD: str
 
-    class Config:
-        case_sensitive = True
-        env_file = '.env'
+    TEMPLATE_PATH: str
+    REPORT_SAVE_DIR: str
+
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file='.env'
+    )
 
 
 env = Env()
