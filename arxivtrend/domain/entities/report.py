@@ -20,7 +20,7 @@ class TokenCount(BaseModel):
     count: int
 
 
-class PeriodWordCount(BaseModel):
+class PeriodTokenCount(BaseModel):
     period_from: date
     token_counts: List[TokenCount] = Field(..., max_length=20)
 
@@ -92,25 +92,25 @@ class WholePeriodData(BaseModel):
 
 class Report(BaseModel):
     whole: WholePeriodData
-    annual: List[PeriodWordCount] = Field(..., max_length=100)
-    monthly: List[PeriodWordCount] = Field(..., max_length=100)
-    weekly: List[PeriodWordCount] = Field(..., max_length=100)
+    annual: List[PeriodTokenCount] = Field(..., max_length=100)
+    monthly: List[PeriodTokenCount] = Field(..., max_length=100)
+    weekly: List[PeriodTokenCount] = Field(..., max_length=100)
 
     @field_validator("annual")
     @classmethod
-    def srot_annual(cls, annual: List[PeriodWordCount]):
+    def srot_annual(cls, annual: List[PeriodTokenCount]):
         annual.sort(key=lambda w: w.period_from)
         return annual
 
     @field_validator("monthly")
     @classmethod
-    def srot_monthly(cls, monthly: List[PeriodWordCount]):
+    def srot_monthly(cls, monthly: List[PeriodTokenCount]):
         monthly.sort(key=lambda w: w.period_from)
         return monthly
 
     @field_validator("weekly")
     @classmethod
-    def sort_weekly(cls, weekly: List[PeriodWordCount]):
+    def sort_weekly(cls, weekly: List[PeriodTokenCount]):
         weekly.sort(key=lambda w: w.period_from)
         return weekly
 

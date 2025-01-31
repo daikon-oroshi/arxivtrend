@@ -1,4 +1,5 @@
 import unittest
+import copy
 from datetime import date
 from arxivtrend.infra.repo.report_repo import ReportRepo
 from arxivtrend.domain.entities import ArxivQuery, Report
@@ -13,9 +14,7 @@ class TestReport(unittest.TestCase):
             submitted_end=date(year=2025, month=1, day=1),
             category="math"
         )
-        report = Report(**{
-            "whole": {
-                "top20": [
+        top20 = [
                     {
                         "token": {"word": "test1", "pos": "動詞"},
                         "count": 20
@@ -60,13 +59,31 @@ class TestReport(unittest.TestCase):
                         "token": {"word": "test11", "pos": "動詞"},
                         "count": 10
                     }
-                ],
+                ]
+        report = Report(**{
+            "whole": {
+                "top20": copy.deepcopy(top20),
                 "noun": [],
                 "verb": [],
                 "adj": []
             },
             "annual": [
-
+                {
+                    "period_from": date(year=2022, month=1, day=1),
+                    "token_counts": copy.deepcopy(top20)
+                },
+                {
+                    "period_from": date(year=2023, month=1, day=1),
+                    "token_counts": copy.deepcopy(top20)
+                },
+                {
+                    "period_from": date(year=2024, month=1, day=1),
+                    "token_counts": copy.deepcopy(top20)
+                },
+                {
+                    "period_from": date(year=2025, month=1, day=1),
+                    "token_counts": copy.deepcopy(top20)
+                }
             ],
             "monthly": [
 
