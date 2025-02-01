@@ -3,6 +3,7 @@
 以下の条件でarXivの論文概要を検索し、その中で多く現れた単語 (名詞、動詞、形容詞) の数を年次、月次、週次でグラフ化します。
 
 .検索クエリー
+[cols="3,7", options="header"]
 |===
 |名前 |値
 
@@ -19,6 +20,7 @@
 |{{query.category}}
 |===
 
+<<<
 
 == 全期間
 
@@ -73,8 +75,9 @@ xychart-beta;
 {% include 'rank-table.tpl' %}
 {% endwith %}
 
-
 {% if report.annual|length > 1 %}
+
+<<<
 
 == 年次
 
@@ -90,8 +93,10 @@ xychart-beta;
 
 {% endif %}
 
-
 {% if report.monthly|length %}
+
+<<<
+
 == 月次
 
 全期間でTOP10に入った単語を月次でグラフ化します。
@@ -106,8 +111,10 @@ xychart-beta;
 
 {% endif %}
 
-
 {% if report.weekly|length > 1 %}
+
+<<<
+
 == 週次
 
 全期間でTOP10に入った単語を週次でグラフ化します。

@@ -32,7 +32,13 @@ services:
       - ./report:/report
     environment:
       - FILE
-    command: asciidoctor-pdf -a scripts=cjk -a pdf-theme=default-with-fallback-font -r asciidoctor-diagram -a mermaid-puppeteer-config=/puppeteer-config.json -n /${FILE} --verbose
+    command: >
+      asciidoctor-pdf
+      -a scripts=cjk
+      -a pdf-theme=/report/theme/custom-theme.yml
+      -r asciidoctor-diagram
+      -a mermaid-puppeteer-config=/puppeteer-config.json
+      -n /${FILE}
 
 networks:
   mongo_network:

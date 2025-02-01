@@ -2,5 +2,5 @@ cache/*
 !cache/.gitkeep
 .env
 .vscode
-report/*
-!report/.gitkeep
+report/generated/*
+!report/generated/.gitkeep

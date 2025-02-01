@@ -40,12 +40,13 @@ xychart-beta;
 ....
 
 .色対応表
+[cols="^1,4,4", options="header"]
 |===
 | 色 |単語 |品詞
 {%- for t in top10_tokens %}
 
-|[{{colors[loop.index-1]}}]#a#
-|{{t.word}}
-|{{t.pos}}
+|[{{colors[loop.index-1]}}]#●#
+| {{t.word}}
+| {{t.pos}}
 {%- endfor %}
 |===

@@ -1,0 +1,35 @@
+extends: default-with-font-fallbacks
+role:
+  merge: true
+  white:
+    font_color: #ffffff
+  silver:
+    font_color: #c0c0c0
+  gray:
+    font_color: #808080
+  black:
+    font_color: #000000
+  red:
+    font_color: #ff0000
+  maroon:
+    font_color: #800000
+  yellow:
+    font_color: #ffff00
+  olive:
+    font_color: #808000
+  lime:
+    font_color: #00ff00
+  green:
+    font_color: #008000
+  aqua:
+    font_color: #00ffff
+  teal:
+    font_color: #008080
+  blue:
+    font_color: #0000ff
+  navy:
+    font_color: #000080
+  fucsia:
+    font_color: #ff00ff
+  purple:
+    font_color: #800080
