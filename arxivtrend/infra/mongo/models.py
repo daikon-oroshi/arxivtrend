@@ -78,7 +78,7 @@ class ArxivResult(Document):
     meta = {
         'indexes': [
             {
-                'fields': ['$category', '$search_q'],
+                'fields': ('category', 'search_q'),
                 'unique': True
             }
         ]
