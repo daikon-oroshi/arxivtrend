@@ -5,8 +5,9 @@ from arxivtrend.domain.entities import (
 )
 from arxivtrend.domain.search \
     import CacheState, SearchService
-from arxivtrend.infra.repo \
-    import ArxivCacheRepo, ArxivSearch
+from arxivtrend.infra.mongo \
+    import ArxivCacheRepo
+from arxivtrend.infra.arxiv_api import ArxivSearch
 from arxivtrend.infra.mongo.engine import Connection
 
 
@@ -17,7 +18,7 @@ class SearchUsecase():
         self.arvix_search = ArxivSearch()
         self.cache_repo = ArxivCacheRepo()
 
-    def search_and_cache_arxiv(
+    def create(
         self,
         query: ArxivQuery,
         force_reacquire: bool

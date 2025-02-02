@@ -1,18 +1,7 @@
 from typing import List
-from enum import StrEnum
 from pydantic import BaseModel, Field, field_validator
 from datetime import date
-
-
-class PosJpNotation(StrEnum):
-    NOUN = "名詞"
-    VERB = "動詞"
-    ADJ = "形容詞"
-
-
-class Token(BaseModel):
-    word: str
-    pos: PosJpNotation
+from .token import Token
 
 
 class TokenCount(BaseModel):

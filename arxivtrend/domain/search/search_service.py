@@ -1,8 +1,11 @@
 from arxivtrend.log import logger
 from arxivtrend.domain.entities import ArxivQuery
-from arxivtrend.infra.repo \
-    import ArxivCacheRepo, ArxivSearch
+from arxivtrend.infra.arxiv_api \
+    import ArxivSearch
+from arxivtrend.infra.mongo \
+    import ArxivCacheRepo
 from .cache_status import CacheState
+from arxivtrend.infra.tokenizer import Tokenizer
 
 
 class SearchService():
@@ -11,6 +14,7 @@ class SearchService():
 
     def __init__(self):
         self.search_repo = ArxivSearch()
+        self.word_extractor = Tokenizer()
         self.cache_repo = ArxivCacheRepo()
 
     def __log_count_of_papers(self, count: int):
@@ -23,8 +27,8 @@ class SearchService():
         cached_q = self.cache_repo.get_cached_query(query)
         if cached_q is None:
             return CacheState.NO
-        if cached_q.submitted_begin == query.submitted_begin \
-                and cached_q.submitted_end == query.submitted_end:
+        if cached_q.submitted_begin <= query.submitted_begin \
+                and query.submitted_end <= cached_q.submitted_end:
             return CacheState.ALL
         else:
             CacheState.PARTLY
@@ -36,6 +40,7 @@ class SearchService():
         buffer = []
         count = 0
         for r in self.search_repo.search(q):
+
             buffer.append(r)
             count = count + 1
 

@@ -3,37 +3,12 @@ import nltk
 from nltk.corpus import wordnet as wn
 from nltk.stem import WordNetLemmatizer
 import re
-from pydantic import BaseModel
+from arxivtrend.domain.entities.token \
+    import PosJpNotation, Token
 
 
-nltk.download('wordnet')
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('averaged_perceptron_tagger')
+class Tokenizer():
 
-
-def get_wordnet_pos(treebank_tag: str) -> str:
-    if treebank_tag.startswith('J'):
-        return wn.ADJ
-    elif treebank_tag.startswith('V'):
-        return wn.VERB
-    elif treebank_tag.startswith('R'):
-        return wn.ADV
-    else:
-        # Default to noun if no match is found or starts with 'N'
-        return wn.NOUN
-
-
-class TaggedToken(BaseModel):
-    token: str
-    pos: str
-
-
-class LemmatizedToken(TaggedToken):
-    lemmatized: str
-
-
-class WordExtractor():
     def __init__(self):
         self.tex_regex = re.compile(r'\$.+?\$')
         self.tex_regex_double = re.compile(r'\$\$.+?\$\$')
@@ -67,6 +42,27 @@ class WordExtractor():
         'VBZ'  # Verb, 3rd person singular present	動詞 (三人称単数の現在形)
     ]
 
+    def _get_wordnet_pos(treebank_tag: str) -> str:
+        if treebank_tag.startswith('J'):
+            return wn.ADJ
+        elif treebank_tag.startswith('V'):
+            return wn.VERB
+        elif treebank_tag.startswith('R'):
+            return wn.ADV
+        else:
+            # Default to noun if no match is found or starts with 'N'
+            return wn.NOUN
+
+    def _get_jp_pos(treebank_tag: str) -> PosJpNotation:
+        if treebank_tag.startswith('J'):
+            return PosJpNotation.ADJ
+        elif treebank_tag.startswith('V'):
+            return PosJpNotation.VERB
+        elif treebank_tag.startswith('N'):
+            return PosJpNotation.NOUN
+        else:
+            return PosJpNotation.OHTER
+
     def _remove_linefeed(self, sentence: str) -> str:
         return sentence.replace('\n', ' ')
 
@@ -84,62 +80,41 @@ class WordExtractor():
         _s = self.tex_regex.sub('', _s)
         return _s
 
-    def preprocess(self, sentence):
+    def _preprocess(self, sentence):
         sentence = self._remove_linefeed(sentence)
         sentence = self._remove_citation(sentence)
         sentence = self._remove_tex(sentence)
         return sentence
 
-    def remove_stopwords(
+    def get_base_stopword(
         self,
-        tagged_tokens: List[TaggedToken]
-    ) -> List[TaggedToken]:
-        stop_words = nltk.corpus.stopwords.words('english') \
+    ) -> List[Token]:
+        return nltk.corpus.stopwords.words('english') \
             + [".", ","]
-        return [
-            t for t in tagged_tokens
-            if t.token.lower() not in stop_words
-        ]
 
-    def tokenize(self, sentence: str) -> List[str]:
-        return nltk.tokenize.word_tokenize(sentence)
-
-    def pos_tagging(self, tokens: List[str]) -> List[TaggedToken]:
-        return [
-            TaggedToken(token=token, pos=pos)
-            for (token, pos) in nltk.pos_tag(tokens)
-        ]
-
-    def lemmatize(self, tagged_token: TaggedToken) -> str:
+    def _lemmatize(self, token: str, treebank_tag: str) -> str:
         return self.lemmatizer.lemmatize(
-            tagged_token.token,
-            pos=get_wordnet_pos(tagged_token.pos)
+            token,
+            pos=self._get_wordnet_pos(treebank_tag)
         )
 
-    def filterby_pos(
-        self,
-        tagged_tokens: List[TaggedToken],
-    ) -> List[TaggedToken]:
-        return [
-            t for t in tagged_tokens
-            if t.pos in self.tag_fw
-            + self.tag_adj
-            + self.tag_noun
-            + self.tag_verb
+    def tokenize(self, sentence: str) -> List[Token]:
+        sentence = self._preprocess(sentence)
+        tokens = nltk.tokenize.word_tokenize(sentence)
+        tagged_tokens = nltk.pos_tag(tokens)
+        lemmatized_tokens = [
+            Token(
+                word=self._lemmatize(t, treebank_tag),
+                pos=self._get_jp_pos(treebank_tag)
+            )
+            for (t, treebank_tag) in tagged_tokens
         ]
 
-    def extract(self, sentence: str) -> List[str]:
-        sentence = self.preprocess(sentence)
-        tokens = self.tokenize(sentence)
-        tagged_tokens = self.pos_tagging(tokens)
-        tagged_tokens = self.remove_stopwords(tagged_tokens)
-        tagged_tokens = self.filterby_pos(tagged_tokens)
-        lemmatized_tokens = [
-            LemmatizedToken(
-                token=t.token,
-                pos=t.pos,
-                lemmatized=self.lemmatize(t)
-            )
-            for t in tagged_tokens
-        ]
         return lemmatized_tokens
+
+
+if __name__ == "__main__":
+    nltk.download('wordnet')
+    nltk.download('stopwords')
+    nltk.download('punkt')
+    nltk.download('averaged_perceptron_tagger')

@@ -1,7 +1,7 @@
 import unittest
 import copy
 from datetime import date
-from arxivtrend.infra.repo.report_repo import ReportRepo
+from arxivtrend.infra.report_repo import ReportRepo
 from arxivtrend.domain.entities import ArxivQuery, Report
 
 
