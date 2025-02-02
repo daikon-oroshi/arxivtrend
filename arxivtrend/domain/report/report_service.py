@@ -16,9 +16,15 @@ from .date_interpolator import DateInterpolator
 
 class ReportService():
 
-    def __init__(self):
+    def __init__(
+        self,
+        query: ArxivQuery,
+        stop_query_word: bool = False
+    ):
         self.date_interpolator = DateInterpolator()
         self.stop_words = Tokenizer.get_stopword()
+        if stop_query_word:
+            self.stop_words.append(query.search_q)
 
     # TODO: mongo側でやりたい
     def aggregate(self, query: ArxivQuery) -> Report:

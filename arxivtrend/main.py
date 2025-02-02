@@ -57,12 +57,19 @@ dec_force_reacquire = click.option(
 @dec_end_arg
 @dec_category_arg
 @dec_force_reacquire
+@click.option(
+        "-s",
+        "--stop_query",
+        is_flag=True,
+        help='exclude search query from aggregate.'
+    )
 def create(
     search_query: str,
     begin: date | None,
     end: date | None,
     category: str,
-    force_reacquire: bool = False
+    force_reacquire: bool = False,
+    stop_query: bool = False
 ):
     query = ArxivQuery(
         search_q=search_query,
@@ -73,7 +80,8 @@ def create(
     usecase = SearchUsecase()
     usecase.create(
         query,
-        force_reacquire
+        force_reacquire,
+        stop_query_word=stop_query
     )
 
 

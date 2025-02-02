@@ -23,11 +23,15 @@ class SearchUsecase():
     def create(
         self,
         query: ArxivQuery,
-        force_reacquire: bool
+        force_reacquire: bool,
+        stop_query_word: bool = False
     ):
         with Connection():
             self.__search_and_cache(query, force_reacquire)
-            report_service = ReportService()
+            report_service = ReportService(
+                query=query,
+                stop_query_word=stop_query_word
+            )
             report = report_service.aggregate(query)
 
             report_repo = ReportRepo(query)
