@@ -91,13 +91,13 @@ def create(
 @dec_end_arg
 @dec_category_arg
 def delete_cache(
-    q: str,
+    search_query: str,
     begin: date | None,
     end: date | None,
     category: str,
 ):
     query = ArxivQuery(
-        search_q=q,
+        search_q=search_query,
         submitted_begin=begin,
         submitted_end=end,
         category=category
