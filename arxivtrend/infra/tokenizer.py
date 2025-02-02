@@ -9,6 +9,11 @@ from arxivtrend.domain.entities.token \
 
 class Tokenizer():
 
+    @staticmethod
+    def get_base_stopword() -> List[Token]:
+        return nltk.corpus.stopwords.words('english') \
+            + [".", ","]
+
     def __init__(self):
         self.tex_regex = re.compile(r'\$.+?\$')
         self.tex_regex_double = re.compile(r'\$\$.+?\$\$')
@@ -42,7 +47,7 @@ class Tokenizer():
         'VBZ'  # Verb, 3rd person singular present	動詞 (三人称単数の現在形)
     ]
 
-    def _get_wordnet_pos(treebank_tag: str) -> str:
+    def _get_wordnet_pos(self, treebank_tag: str) -> str:
         if treebank_tag.startswith('J'):
             return wn.ADJ
         elif treebank_tag.startswith('V'):
@@ -53,7 +58,7 @@ class Tokenizer():
             # Default to noun if no match is found or starts with 'N'
             return wn.NOUN
 
-    def _get_jp_pos(treebank_tag: str) -> PosJpNotation:
+    def _get_jp_pos(self, treebank_tag: str) -> PosJpNotation:
         if treebank_tag.startswith('J'):
             return PosJpNotation.ADJ
         elif treebank_tag.startswith('V'):
@@ -86,12 +91,6 @@ class Tokenizer():
         sentence = self._remove_tex(sentence)
         return sentence
 
-    def get_base_stopword(
-        self,
-    ) -> List[Token]:
-        return nltk.corpus.stopwords.words('english') \
-            + [".", ","]
-
     def _lemmatize(self, token: str, treebank_tag: str) -> str:
         return self.lemmatizer.lemmatize(
             token,
@@ -117,4 +116,6 @@ if __name__ == "__main__":
     nltk.download('wordnet')
     nltk.download('stopwords')
     nltk.download('punkt')
+    nltk.download('punkt_tab')
     nltk.download('averaged_perceptron_tagger')
+    nltk.download('averaged_perceptron_tagger_eng')

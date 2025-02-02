@@ -6,7 +6,7 @@ class PosJpNotation(StrEnum):
     NOUN = "名詞"
     VERB = "動詞"
     ADJ = "形容詞"
-    OHTER = "--"
+    OHTER = "-"
 
 
 class Token(BaseModel):

@@ -14,7 +14,7 @@ class SearchService():
 
     def __init__(self):
         self.search_repo = ArxivSearch()
-        self.word_extractor = Tokenizer()
+        self.tokenizer = Tokenizer()
         self.cache_repo = ArxivCacheRepo()
 
     def __log_count_of_papers(self, count: int):
@@ -40,7 +40,7 @@ class SearchService():
         buffer = []
         count = 0
         for r in self.search_repo.search(q):
-
+            r.tokens = self.tokenizer.tokenize(r.summary)
             buffer.append(r)
             count = count + 1
 

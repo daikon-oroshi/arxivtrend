@@ -6,6 +6,4 @@ from arxivtrend.domain.entities import ArxivQuery
 class ReportService():
 
     def __init__(self, query: ArxivQuery):
-        self.word_extractor: Tokenizer = Tokenizer()
-
         self.report_repo = ReportRepo()

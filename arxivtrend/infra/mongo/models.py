@@ -2,12 +2,18 @@ from mongoengine import (
     Document, StringField,
     DateTimeField,
     ListField, ReferenceField,
-    PULL
+    PULL, DictField, ValidationError
 )
 from arxivtrend.domain.entities import (
     ArxivSummaryEntity, ArxivResultEntity,
-    ArxivQuery
+    ArxivQuery, Token
 )
+
+
+class TokenFiled(DictField):
+    def validation(self, value: dict):
+        if set(value.keys()) != {"word", "pos"}:
+            raise ValidationError(f"Invalid token value: {value}")
 
 
 class ArxivSummary(Document):
@@ -18,6 +24,7 @@ class ArxivSummary(Document):
     authors = ListField(StringField())
     summary = StringField()
     categories = ListField(StringField())
+    tokens = ListField(TokenFiled())
 
     meta = {
         'ordering': ['entry_id'],
@@ -34,21 +41,28 @@ class ArxivSummary(Document):
             title=entity.title,
             authors=entity.authors,
             summary=entity.summary,
-            categories=entity.categories
+            categories=entity.categories,
+            tokens=[
+                t.model_dump() for t in entity.tokens
+            ]
         )
 
     def to_entity(
         self
     ) -> ArxivSummaryEntity:
-        return ArxivSummaryEntity(
+        summary = ArxivSummaryEntity(
             entry_id=self.entry_id,
             updated=self.updated,
             published=self.published,
             title=self.title,
             authors=self.authors,
             summary=self.summary,
-            categories=self.categories
+            categories=self.categories,
+            tokens=[
+                Token(**t) for t in self.tokens
+            ]
         )
+        return summary
 
 
 class ArxivResult(Document):
