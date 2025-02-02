@@ -33,7 +33,11 @@ class ArxivSearch():
     ) -> Generator[ArxivSummaryEntity, None, None]:
         max_res = max_results if max_results is not None \
                 else float('inf')
-        client = arxiv.Client()
+        client = arxiv.Client(
+            page_size=100,
+            delay_seconds=60,
+            num_retries=20
+        )
 
         search = arxiv.Search(
             query=self._make_query_str(q),
@@ -50,7 +54,7 @@ class ArxivSearch():
     ) -> str:
         q = []
         q.append(
-            f"ti:\"{query.search_q}\""
+            f"all:\"{query.search_q}\""
         )
 
         taxos = self._get_partial_match_taxonomies(query.category)

@@ -11,7 +11,7 @@ from arxivtrend.infra.tokenizer import Tokenizer
 
 class SearchService():
 
-    BUFF_SIZE = 500
+    BUFF_SIZE = 50
 
     def __init__(self):
         self.search_repo = ArxivSearch()
