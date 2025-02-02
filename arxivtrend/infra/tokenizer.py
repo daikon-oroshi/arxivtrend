@@ -5,14 +5,25 @@ from nltk.stem import WordNetLemmatizer
 import re
 from arxivtrend.domain.entities.token \
     import PosJpNotation, Token
+from arxivtrend.env import env
+from pathlib import Path
 
 
 class Tokenizer():
 
     @staticmethod
-    def get_base_stopword() -> List[Token]:
-        return nltk.corpus.stopwords.words('english') \
+    def get_stopword() -> List[Token]:
+        stopwords = nltk.corpus.stopwords.words('english') \
             + [".", ","]
+
+        for filename in env.STOP_WORD_FILES:
+            with open(Path(env.STOP_WORD_DIR, filename), "r") as f:
+                stopwords.extend([
+                    word.rstrip('\n')
+                    for word in f.readlines()
+                ])
+
+        return stopwords
 
     def __init__(self):
         self.tex_regex = re.compile(r'\$.+?\$')

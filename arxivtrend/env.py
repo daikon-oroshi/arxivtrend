@@ -1,3 +1,4 @@
+from typing import List
 from pydantic_settings import (
     BaseSettings, SettingsConfigDict
 )
@@ -13,6 +14,9 @@ class Env(BaseSettings):
 
     TEMPLATE_PATH: str
     REPORT_SAVE_DIR: str
+
+    STOP_WORD_DIR: str
+    STOP_WORD_FILES: List[str] = []
 
     model_config = SettingsConfigDict(
         case_sensitive=True,

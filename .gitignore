@@ -4,3 +4,5 @@ cache/*
 .vscode
 report/generated/*
 !report/generated/.gitkeep
+stop_words/*
+!stop_words/general.txt

@@ -18,7 +18,7 @@ class ReportService():
 
     def __init__(self):
         self.date_interpolator = DateInterpolator()
-        self.stop_words = self.get_stop_word()
+        self.stop_words = Tokenizer.get_stopword()
 
     # TODO: mongo側でやりたい
     def aggregate(self, query: ArxivQuery) -> Report:
@@ -134,7 +134,3 @@ class ReportService():
             verb=verb,
             adj=adj
         )
-
-    def get_stop_word(self):
-        # TODO: 外部から追加
-        return Tokenizer.get_base_stopword()
