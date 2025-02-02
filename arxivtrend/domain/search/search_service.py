@@ -1,5 +1,6 @@
 from arxivtrend.log import logger
-from arxivtrend.domain.entities import ArxivQuery
+from arxivtrend.domain.entities \
+    import ArxivQuery
 from arxivtrend.infra.arxiv_api \
     import ArxivSearch
 from arxivtrend.infra.mongo \

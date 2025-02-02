@@ -66,7 +66,7 @@ class Tokenizer():
         elif treebank_tag.startswith('N'):
             return PosJpNotation.NOUN
         else:
-            return PosJpNotation.OHTER
+            return PosJpNotation.OTHER
 
     def _remove_linefeed(self, sentence: str) -> str:
         return sentence.replace('\n', ' ')

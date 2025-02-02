@@ -1,6 +1,6 @@
 import unittest
 import datetime
-from arxivtrend.infra.repo.arxiv_cache_repo import ArxivCacheRepo
+from arxivtrend.infra.mongo.arxiv_cache_repo import ArxivCacheRepo
 from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary
 )
@@ -93,7 +93,7 @@ class TestArxivCacheRepo(unittest.TestCase):
             self.TEST_QUERY_ENTITY
         )
 
-        result = repo.get(
+        result = repo.get_summaries(
             self.TEST_QUERY_ENTITY
         )
 

@@ -4,6 +4,9 @@ from datetime import date
 from .token import Token
 
 
+LINEGRAPH_MAXLABELS = 100
+
+
 class TokenCount(BaseModel):
     token: Token
     count: int
@@ -15,9 +18,12 @@ class PeriodTokenCount(BaseModel):
 
     @property
     def max_of_count(self) -> int:
-        return max([
-            tc.count for tc in self.token_counts
-        ])
+        if len(self.token_counts) == 0:
+            return 0
+        else:
+            return max([
+                tc.count for tc in self.token_counts
+            ])
 
     def get_count_by_word(
         self,
@@ -67,9 +73,12 @@ class WholePeriodData(BaseModel):
 
     @property
     def max_of_count(self) -> int:
-        return max([
-            w.count for w in self.top20
-        ])
+        if len(self.top20) == 0:
+            return 0
+        else:
+            return max([
+                w.count for w in self.top20
+            ])
 
     @property
     def top10_tokens(self) -> List[Token]:
@@ -81,19 +90,22 @@ class WholePeriodData(BaseModel):
 
 class Report(BaseModel):
     whole: WholePeriodData
-    annual: List[PeriodTokenCount] = Field(..., max_length=100)
-    monthly: List[PeriodTokenCount] = Field(..., max_length=100)
-    weekly: List[PeriodTokenCount] = Field(..., max_length=100)
+    annual: List[PeriodTokenCount] = \
+        Field(..., max_length=LINEGRAPH_MAXLABELS)
+    monthly: List[PeriodTokenCount] = \
+        Field(..., max_length=LINEGRAPH_MAXLABELS)
+    weekly: List[PeriodTokenCount] = \
+        Field(..., max_length=LINEGRAPH_MAXLABELS)
 
     @field_validator("annual")
     @classmethod
-    def srot_annual(cls, annual: List[PeriodTokenCount]):
+    def sort_annual(cls, annual: List[PeriodTokenCount]):
         annual.sort(key=lambda w: w.period_from)
         return annual
 
     @field_validator("monthly")
     @classmethod
-    def srot_monthly(cls, monthly: List[PeriodTokenCount]):
+    def sort_monthly(cls, monthly: List[PeriodTokenCount]):
         monthly.sort(key=lambda w: w.period_from)
         return monthly
 
@@ -105,18 +117,27 @@ class Report(BaseModel):
 
     @property
     def annual_max_of_count(self):
-        return max([
-            a.max_of_count for a in self.annual
-        ])
+        if len(self.annual) == 0:
+            return 0
+        else:
+            return max([
+                a.max_of_count for a in self.annual
+            ])
 
     @property
     def monthly_max_of_count(self):
-        return max([
-            m.max_of_count for m in self.monthly
-        ])
+        if len(self.monthly) == 0:
+            return 0
+        else:
+            return max([
+                m.max_of_count for m in self.monthly
+            ])
 
     @property
     def weekly_max_of_count(self):
-        return max([
-            w.max_of_count for w in self.weekly
-        ])
+        if len(self.weekly) == 0:
+            return 0
+        else:
+            return max([
+                w.max_of_count for w in self.weekly
+            ])

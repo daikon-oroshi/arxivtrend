@@ -29,7 +29,7 @@ class ArxivCacheRepo():
             submitted_end=result.submitted_end
         )
 
-    def get(
+    def get_summaries(
         self,
         q: ArxivQuery
     ) -> List[ArxivSummary]:
