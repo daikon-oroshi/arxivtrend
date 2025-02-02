@@ -3,8 +3,8 @@ from arxivtrend.env import env
 
 
 class Connection:
-    def __enter__(self):
-        self.conn = connect(
+    def connect_db(self):
+        return connect(
             db=env.MONGO_DB_NAME,
             username="root",
             password="password",
@@ -14,7 +14,9 @@ class Connection:
             authentication_source='admin',
             uuidRepresentation='standard'
         )
-        return self.conn
+
+    def __enter__(self):
+        self.conn = self.connect_db()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.conn.close()

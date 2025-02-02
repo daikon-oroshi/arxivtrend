@@ -1,13 +1,13 @@
 from typing import List, Generator
 import arxiv
-
+from arxivtrend.domain.search import ArxivSearchImpl
 from arxivtrend.infra.arxiv_api.taxonomies import taxonomies
 from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
 
 
-class ArxivSearch():
+class ArxivSearch(ArxivSearchImpl):
 
     def get_partial_match_taxonomies(
         self,

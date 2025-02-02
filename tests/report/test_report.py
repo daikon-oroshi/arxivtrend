@@ -91,4 +91,4 @@ class TestReport(unittest.TestCase):
             "weekly": []
         })
         report_repo = ReportRepo(query=query, report=report)
-        report_repo.render_adoc()
+        report_repo.render_report()

@@ -1,14 +1,15 @@
-from typing import List, Optional
+from typing import List
 from arxivtrend.domain.entities import (
-    ArxivQuery, ArxivResultEntity,
+    ArxivQuery,
     ArxivSummaryEntity
 )
-from arxivtrend.infra.mongo.models import (
+from arxivtrend.domain.search.i_arxiv_cache_repo import ArxivCacheRepoImpl
+from arxivtrend.infra.mongo import (
     ArxivResult, ArxivSummary
 )
 
 
-class ArxivCacheRepo():
+class ArxivCacheRepo(ArxivCacheRepoImpl):
 
     def get_cached_query(
         self,
@@ -32,33 +33,40 @@ class ArxivCacheRepo():
     def get(
         self,
         q: ArxivQuery
-    ) -> Optional[ArxivResultEntity]:
+    ) -> List[ArxivSummary]:
         doc = ArxivResult.objects(
             search_q=q.search_q,
             category=q.category
         ).first()
 
         if doc is None:
-            return None
+            return []
 
-        return doc.to_entity()
+        summaries = ArxivSummary.objects().filter(
+            pk__in=[s.pk for s in doc.summaries],
+            published__gte=q.submitted_begin,
+            published__lte=q.submitted_end,
+        )
+
+        return [
+            s.to_entity() for s in summaries
+        ]
 
     def store(
         self,
         query: ArxivQuery,
         results: List[ArxivSummaryEntity]
     ):
-
-        doc: ArxivResult = ArxivResult.objects.filter(
-            search_q=query.search_q,
-            category=query.category
-        ).first()
-
         summaries = [
             ArxivSummary.from_entity(r)
             for r in results
         ]
         ArxivSummary.objects.insert(summaries)
+
+        doc: ArxivResult = ArxivResult.objects.filter(
+            search_q=query.search_q,
+            category=query.category
+        ).first()
 
         if doc is not None:
             doc.update(push_all__summaries=summaries)

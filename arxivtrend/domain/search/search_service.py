@@ -1,20 +1,21 @@
 from arxivtrend.log import logger
 from arxivtrend.domain.entities import ArxivQuery
-from arxivtrend.domain.search import (
-    ArxivSearchImpl, ArxivCacheRepoImpl,
-    CacheState
-)
-from arxivtrend.infra.repo import (
-    ArxivCacheRepo, ArxivSearch
-)
+from arxivtrend.infra.repo.arxiv_cache_repo \
+    import ArxivCacheRepo
+from arxivtrend.infra.repo.arxiv_search \
+    import ArxivSearch
+from .i_arxiv_cache_repo import ArxivCacheRepoImpl
+from .i_arxiv_search import ArxivSearchImpl
+from .cache_status import CacheState
 
 
 class SearchService():
 
     BUFF_SIZE = 500
 
-    search_repo: ArxivSearchImpl = ArxivSearch()
-    cache_repo: ArxivCacheRepoImpl = ArxivCacheRepo()
+    def __init__(self):
+        self.search_repo: ArxivSearchImpl = ArxivSearch()
+        self.cache_repo: ArxivCacheRepoImpl = ArxivCacheRepo()
 
     def __log_count_of_papers(self, count: int):
         print(f"\r Count of papers: {count}\n", end="")

@@ -5,10 +5,12 @@ from arxivtrend.infra.mongo.models import (
     ArxivResult, ArxivSummary
 )
 from arxivtrend.domain.entities import (
-    ArxivQuery, ArxivSummaryEntity,
-    ArxivResultEntity
+    ArxivQuery, ArxivSummaryEntity
 )
 from arxivtrend.infra.mongo.engine import Connection
+
+
+Connection().connect_db()
 
 
 def is_db_initial_state():
@@ -28,7 +30,7 @@ class TestArxivCacheRepo(unittest.TestCase):
 
     TEST_ARXIV_SUMMARY_ENTITIES = [
         ArxivSummaryEntity(
-            entry_id=1,
+            entry_id="http://arxiv.org/abs/xxxxxxx",
             updated=datetime.date.today(),
             published=datetime.date.today(),
             title="test",
@@ -100,10 +102,7 @@ class TestArxivCacheRepo(unittest.TestCase):
         )
         self.assertEqual(
             result,
-            ArxivResultEntity(
-                query=self.TEST_QUERY_ENTITY,
-                results=self.TEST_ARXIV_SUMMARY_ENTITIES
-            )
+            self.TEST_ARXIV_SUMMARY_ENTITIES
         )
 
     def test_delete(self):
@@ -119,5 +118,4 @@ class TestArxivCacheRepo(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    with Connection():
-        unittest.main()
+    unittest.main()

@@ -11,6 +11,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./cache:/data/db
+    command: mongod --profile=1 --slowms=-1
 
   mongo-express:
     image: mongo-express

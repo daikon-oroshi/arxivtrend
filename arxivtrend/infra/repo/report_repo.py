@@ -2,13 +2,13 @@ from arxivtrend.env import env
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 from arxivtrend.domain.entities import Report, ArxivQuery
+from arxivtrend.domain.report.i_report_repo import ReportRepoImpl
 
 
-class ReportRepo():
+class ReportRepo(ReportRepoImpl):
 
-    def __init__(self, query: ArxivQuery, report: Report):
+    def __init__(self, query: ArxivQuery):
         self.query = query
-        self.report = report
 
     def _save_dir(self) -> Path:
         _dir_name = f"{self.query.search_q}_" \
@@ -27,7 +27,7 @@ class ReportRepo():
         with save_path.open(mode='w') as f:
             f.write(adoc)
 
-    def render_adoc(self):
+    def render_report(self, report: Report):
         tpl_path = Path(env.TEMPLATE_PATH)
         tpl_env = Environment(
             loader=FileSystemLoader(tpl_path.parent)
@@ -35,7 +35,7 @@ class ReportRepo():
         template = tpl_env.get_template(tpl_path.name)
         adoc = template.render(
             {
-                "report": self.report,
+                "report": report,
                 "query": self.query
             }
         )
