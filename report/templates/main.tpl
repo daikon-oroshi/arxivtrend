@@ -20,6 +20,29 @@
 |{{query.category}}
 |===
 
+[cols="3,7"]
+|===
+| 論文数
+| {{report.whole.paper_count}}
+|===
+
+
+.年次論文数推移
+{% with
+  period = report.annual,
+  max_count = report.annual_max_of_paper_count
+%}
+{% include 'graph-paper-count.tpl' %}
+{% endwith %}
+
+.月次論文数推移
+{% with
+  period = report.monthly,
+  max_count = report.monthly_max_of_paper_count
+%}
+{% include 'graph-paper-count.tpl' %}
+{% endwith %}
+
 <<<
 
 == 全期間
@@ -30,13 +53,13 @@
 ....
 xychart-beta;
   x-axis [
-    {%- for tc in report.whole.top10|reverse -%}
+    {%- for tc in report.whole.top10 -%}
       {{ tc.token.word }}{% if not loop.last %},{% endif %}
     {%- endfor -%}
   ];
   y-axis 0 --> {{ report.whole.max_of_count }};
   bar [
-    {%- for tc in report.whole.top10|reverse -%}
+    {%- for tc in report.whole.top10 -%}
       {{tc.count}}{% if not loop.last %},{% endif %}
     {%- endfor -%}
   ];

@@ -14,6 +14,7 @@ class TokenCount(BaseModel):
 
 class PeriodTokenCount(BaseModel):
     period_from: date
+    paper_count: int
     token_counts: List[TokenCount] = Field(..., max_length=20)
 
     @property
@@ -36,6 +37,7 @@ class PeriodTokenCount(BaseModel):
 
 
 class WholePeriodData(BaseModel):
+    paper_count: int
     top20: List[TokenCount] = Field(..., max_length=20)
     noun: List[TokenCount] = Field(..., max_length=20)
     verb: List[TokenCount] = Field(..., max_length=20)
@@ -140,4 +142,23 @@ class Report(BaseModel):
         else:
             return max([
                 w.max_of_count for w in self.weekly
+            ])
+
+    # TODO: refactor
+    @property
+    def annual_max_of_paper_count(self):
+        if len(self.annual) == 0:
+            return 0
+        else:
+            return max([
+                a.paper_count for a in self.annual
+            ])
+
+    @property
+    def monthly_max_of_paper_count(self):
+        if len(self.monthly) == 0:
+            return 0
+        else:
+            return max([
+                a.paper_count for a in self.monthly
             ])

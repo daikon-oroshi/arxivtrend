@@ -65,23 +65,25 @@ class ReportService():
         period: List[date],
         summaries: List[ArxivSummaryEntity],
         token_list: List[Token] | None = None
-    ) -> List[TokenCount]:
-        ret = []
+    ) -> List[PeriodTokenCount]:
+        period_token_counts = []
         for _b, _e in zip(period, period[1:]):
+            period_summ = [
+                s for s in summaries
+                if _b <= s.published and s.published < _e
+            ]
             token_counts = self._count_token(
-                [
-                    s for s in summaries
-                    if _b <= s.published and s.published < _e
-                ],
+                period_summ,
                 token_list
             )
-            ret.append(
+            period_token_counts.append(
                 PeriodTokenCount(
                     period_from=_b,
+                    paper_count=len(period_summ),
                     token_counts=token_counts
                 )
             )
-        return ret
+        return period_token_counts
 
     def _count_token(
         self,
@@ -129,6 +131,7 @@ class ReportService():
             if tc.token.pos == PosJpNotation.ADJ
         ][0:20]
         return WholePeriodData(
+            paper_count=len(summaries),
             top20=top20,
             noun=noun,
             verb=verb,
