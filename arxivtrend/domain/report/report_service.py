@@ -26,13 +26,16 @@ class ReportService():
         summaries = cache_repo.get_summaries(query)
 
         whole = self.whole_aggregate(summaries)
+        top10_tokens = [
+            tc.token for tc in whole.top10
+        ]
 
         years = self.date_interpolator.interpolate(
             query.submitted_begin,
             query.submitted_end,
             "year"
         )
-        annual = self.period_aggregate(years, summaries, whole.top10)
+        annual = self.period_aggregate(years, summaries, top10_tokens)
 
         months = self.date_interpolator.interpolate(
             query.submitted_begin,
@@ -40,7 +43,7 @@ class ReportService():
             "month"
         )
         monthly = [] if len(months) > LINEGRAPH_MAXLABELS \
-            else self.period_aggregate(months, summaries, whole.top10)
+            else self.period_aggregate(months, summaries, top10_tokens)
 
         weeks = self.date_interpolator.interpolate(
             query.submitted_begin,
@@ -48,7 +51,7 @@ class ReportService():
             "week"
         )
         weekly = [] if len(weeks) > LINEGRAPH_MAXLABELS \
-            else self.period_aggregate(weeks, summaries, whole.top10)
+            else self.period_aggregate(weeks, summaries, top10_tokens)
 
         return Report(
             whole=whole,
