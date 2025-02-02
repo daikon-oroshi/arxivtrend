@@ -3,13 +3,12 @@ from arxivtrend.domain.entities import (
     ArxivQuery,
     ArxivSummaryEntity
 )
-from arxivtrend.domain.search.i_arxiv_cache_repo import ArxivCacheRepoImpl
 from arxivtrend.infra.mongo import (
     ArxivResult, ArxivSummary
 )
 
 
-class ArxivCacheRepo(ArxivCacheRepoImpl):
+class ArxivCacheRepo():
 
     def get_cached_query(
         self,

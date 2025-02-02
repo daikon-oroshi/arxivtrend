@@ -3,16 +3,10 @@ from arxivtrend.log import logger
 from arxivtrend.domain.entities import (
     ArxivQuery
 )
-from arxivtrend.domain.search.cache_status \
-    import CacheState
-from arxivtrend.domain.search.search_service \
-    import SearchService
-from arxivtrend.domain.search.i_arxiv_cache_repo \
-    import ArxivCacheRepoImpl
-from arxivtrend.infra.repo.arxiv_cache_repo \
-    import ArxivCacheRepo
-from arxivtrend.infra.repo.arxiv_search \
-    import ArxivSearch
+from arxivtrend.domain.search \
+    import CacheState, SearchService
+from arxivtrend.infra.repo \
+    import ArxivCacheRepo, ArxivSearch
 from arxivtrend.infra.mongo.engine import Connection
 
 
@@ -21,7 +15,7 @@ class SearchUsecase():
     def __init__(self):
         self.search_service = SearchService()
         self.arvix_search = ArxivSearch()
-        self.cache_repo: ArxivCacheRepoImpl = ArxivCacheRepo()
+        self.cache_repo = ArxivCacheRepo()
 
     def search_and_cache_arxiv(
         self,

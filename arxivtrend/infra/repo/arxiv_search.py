@@ -1,15 +1,14 @@
 from typing import List, Generator
 import arxiv
-from arxivtrend.domain.search import ArxivSearchImpl
 from arxivtrend.infra.arxiv_api.taxonomies import taxonomies
 from arxivtrend.domain.entities import (
     ArxivQuery, ArxivSummaryEntity
 )
 
 
-class ArxivSearch(ArxivSearchImpl):
+class ArxivSearch():
 
-    def get_partial_match_taxonomies(
+    def _get_partial_match_taxonomies(
         self,
         cat_q: str
     ) -> List[str]:
@@ -37,7 +36,7 @@ class ArxivSearch(ArxivSearchImpl):
         client = arxiv.Client()
 
         search = arxiv.Search(
-            query=self.make_query_str(q),
+            query=self._make_query_str(q),
             sort_by=arxiv.SortCriterion.SubmittedDate,
             max_results=max_res
         )
@@ -45,7 +44,7 @@ class ArxivSearch(ArxivSearchImpl):
         for r in client.results(search):
             yield ArxivSummaryEntity.from_arxiv_result(r)
 
-    def make_query_str(
+    def _make_query_str(
         self,
         query: ArxivQuery
     ) -> str:
@@ -54,7 +53,7 @@ class ArxivSearch(ArxivSearchImpl):
             f"ti:\"{query.search_q}\""
         )
 
-        taxos = self.get_partial_match_taxonomies(query.category)
+        taxos = self._get_partial_match_taxonomies(query.category)
 
         if taxos:
             sep = " OR "

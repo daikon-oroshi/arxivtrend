@@ -2,10 +2,9 @@ from arxivtrend.env import env
 from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 from arxivtrend.domain.entities import Report, ArxivQuery
-from arxivtrend.domain.report.i_report_repo import ReportRepoImpl
 
 
-class ReportRepo(ReportRepoImpl):
+class ReportRepo():
 
     def __init__(self, query: ArxivQuery):
         self.query = query
