@@ -3,7 +3,7 @@
 xychart-beta;
   x-axis [
     {%- for p in period -%}
-      {{p.period_from}}{% if not loop.last %},{% endif %}
+      {{p.period_from.strftime(date_format)}}{% if not loop.last %},{% endif %}
     {%- endfor -%}
   ];
   y-axis 0 --> {{ max_count }}

@@ -30,18 +30,22 @@
 .年次論文数推移
 {% with
   period = report.annual,
-  max_count = report.annual_max_of_paper_count
+  max_count = report.annual_max_of_paper_count,
+  date_format = '%Y'
 %}
 {% include 'graph-paper-count.tpl' %}
 {% endwith %}
 
+{% if report.monthly|length > 1 %}
 .月次論文数推移
 {% with
   period = report.monthly,
-  max_count = report.monthly_max_of_paper_count
+  max_count = report.monthly_max_of_paper_count,
+  date_format = '%Y-%d'
 %}
 {% include 'graph-paper-count.tpl' %}
 {% endwith %}
+{% endif %}
 
 <<<
 
@@ -109,7 +113,8 @@ xychart-beta;
 {% with
   period = report.annual,
   top10_tokens = report.whole.top10_tokens,
-  max_of_count=report.annual_max_of_count
+  max_of_count=report.annual_max_of_count,
+  date_format = '%Y'
 %}
 {% include 'period-aggregate.tpl' %}
 {% endwith %}
@@ -127,7 +132,8 @@ xychart-beta;
 {% with
   period = report.monthly,
   top10_tokens = report.whole.top10_tokens,
-  max_of_count=report.monthly_max_of_count
+  max_of_count=report.monthly_max_of_count,
+  date_format = '%Y-%d'
 %}
 {% include 'period-aggregate.tpl' %}
 {% endwith %}
