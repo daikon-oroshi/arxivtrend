@@ -34,9 +34,9 @@ class ArxivSearch():
         max_res = max_results if max_results is not None \
                 else float('inf')
         client = arxiv.Client(
-            page_size=100,
+            page_size=200,
             delay_seconds=60,
-            num_retries=20
+            num_retries=100
         )
 
         search = arxiv.Search(
