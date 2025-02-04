@@ -41,7 +41,7 @@
 {% with
   period = report.monthly,
   max_count = report.monthly_max_of_paper_count,
-  date_format = '%Y-%d'
+  date_format = '%Y-%m'
 %}
 {% include 'graph-paper-count.tpl' %}
 {% endwith %}
@@ -133,7 +133,7 @@ xychart-beta;
   period = report.monthly,
   top10_tokens = report.whole.top10_tokens,
   max_of_count=report.monthly_max_of_count,
-  date_format = '%Y-%d'
+  date_format = '%Y-%m'
 %}
 {% include 'period-aggregate.tpl' %}
 {% endwith %}
