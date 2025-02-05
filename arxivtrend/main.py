@@ -118,5 +118,26 @@ def show_categories():
     usecase.show_categories()
 
 
+@cli.command()
+@dec_search_q_arg
+@dec_begin_arg
+@dec_end_arg
+@dec_category_arg
+def show_query_str(
+    search_query: str,
+    begin: date | None,
+    end: date | None,
+    category: str,
+):
+    query = ArxivQuery(
+        search_q=search_query,
+        submitted_begin=begin,
+        submitted_end=end,
+        category=category
+    )
+    usecase = SearchUsecase()
+    usecase.show_query_str(query)
+
+
 if __name__ == "__main__":
     cli()

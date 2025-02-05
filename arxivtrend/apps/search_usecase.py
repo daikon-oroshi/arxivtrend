@@ -90,3 +90,11 @@ class SearchUsecase():
     def show_categories(self) -> dict:
         categories = self.arvix_search.get_categories()
         print(json.dumps(categories, indent=2))
+
+    def show_query_str(self, query: ArxivQuery):
+        # 件数確認用にqueryを取得
+        # https://export.arxiv.org/api/query?search_query={query_str}
+        # で確認できる
+        # TODO: count にする
+        query_str = self.arvix_search._make_query_str(query)
+        print(query_str)

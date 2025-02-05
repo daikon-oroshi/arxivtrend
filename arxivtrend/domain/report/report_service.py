@@ -24,7 +24,7 @@ class ReportService():
         self.date_interpolator = DateInterpolator()
         self.stop_words = Tokenizer.get_stopword()
         if stop_query_word:
-            self.stop_words.append(query.search_q)
+            self.stop_words.extend(query.search_q.split())
 
     # TODO: mongo側でやりたい
     def aggregate(self, query: ArxivQuery) -> Report:
