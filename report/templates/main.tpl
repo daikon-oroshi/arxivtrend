@@ -27,6 +27,7 @@
 |===
 
 
+{% if report.annual|length > 1 %}
 .年次論文数推移
 {% with
   period = report.annual,
@@ -35,6 +36,7 @@
 %}
 {% include 'graph-paper-count.tpl' %}
 {% endwith %}
+{% endif %}
 
 {% if report.monthly|length > 1 %}
 .月次論文数推移
@@ -151,7 +153,8 @@ xychart-beta;
 {% with
   period = report.weekly,
   top10_tokens = report.whole.top10_tokens,
-  max_of_count=report.weekly_max_of_count
+  max_of_count=report.weekly_max_of_count,
+  date_format = '%Y-%m-%d'
 %}
 {% include 'period-aggregate.tpl' %}
 {% endwith %}
