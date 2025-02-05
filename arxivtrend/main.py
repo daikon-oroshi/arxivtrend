@@ -61,7 +61,7 @@ dec_force_reacquire = click.option(
         "-s",
         "--stop_query",
         is_flag=True,
-        help='exclude search query from aggregate.'
+        help='exclude search query from aggregation for report.'
     )
 def create(
     search_query: str,

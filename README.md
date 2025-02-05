@@ -65,6 +65,6 @@ poetry run python -m arxivtrend.main show-categories
 ```
 でも取得できます。
 
-### ストップワード
+### ストップワードの指定、追加
 
 集計に意味がなさそうな単語はレポートから除くことができます。~/stop_words/ 以下にテキストファイルを作成し、.env の STOP_WORD_FILES にそのファイルを追加してください。
